@@ -1,0 +1,60 @@
+result of kmeans algorithm:
+
+(0,2506,(Other Sister, The (1999),Comedy|Drama|Romance))
+(0,1780,(Ayn Rand: A Sense of Life (1997),Documentary))
+(0,1390,(My Fellow Americans (1996),Comedy))
+(0,548,(Terminal Velocity (1994),Action))
+(0,1630,(Lay of the Land, The (1997),Comedy|Drama))
+(1,1193,(One Flew Over the Cuckoo's Nest (1975),Drama))
+(2,368,(Maverick (1994),Action|Comedy|Western))
+(2,1608,(Air Force One (1997),Action|Thriller))
+(2,1370,(Die Hard 2 (1990),Action|Thriller))
+(2,2058,(Negotiator, The (1998),Action|Thriller))
+(2,434,(Cliffhanger (1993),Action|Adventure|Crime))
+(3,296,(Pulp Fiction (1994),Crime|Drama))
+(3,50,(Usual Suspects, The (1995),Crime|Thriller))
+(3,2858,(American Beauty (1999),Comedy|Drama))
+(3,1617,(L.A. Confidential (1997),Crime|Film-Noir|Mystery|Thriller))
+(3,2997,(Being John Malkovich (1999),Comedy))
+(4,527,(Schindler's List (1993),Drama|War))
+(5,3753,(Patriot, The (2000),Action|Drama|War))
+(5,3755,(Perfect Storm, The (2000),Action|Adventure|Thriller))
+(6,160,(Congo (1995),Action|Adventure|Mystery|Sci-Fi))
+(6,344,(Ace Ventura: Pet Detective (1994),Comedy))
+(6,1344,(Cape Fear (1962),Film-Noir|Thriller))
+(6,162,(Crumb (1994),Documentary))
+(6,2724,(Runaway Bride (1999),Comedy|Romance))
+(7,3811,(Breaker Morant (1980),Drama|War))
+(8,2194,(Untouchables, The (1987),Action|Crime|Drama))
+(8,1196,(Star Wars: Episode V - The Empire Strikes Back (1980),Action|Adventure|Drama|Sci-Fi|War))
+(8,1198,(Raiders of the Lost Ark (1981),Action|Adventure))
+(8,1374,(Star Trek: The Wrath of Khan (1982),Action|Adventure|Sci-Fi))
+(8,1376,(Star Trek IV: The Voyage Home (1986),Action|Adventure|Sci-Fi))
+(9,1148,(Wrong Trousers, The (1993),Animation|Comedy))
+(9,150,(Apollo 13 (1995),Drama))
+(9,1288,(This Is Spinal Tap (1984),Comedy|Drama|Musical))
+(9,1234,(Sting, The (1973),Comedy|Crime))
+(9,1230,(Annie Hall (1977),Comedy|Romance))
+
+result of decision tree:
+testAccu: Double = 0.6444444444444445
+
+result of naiveBayes:
+accuracy: Double = 0.5454545454545454
+
+Print out the learned latent vector for user id 1,1757 and 1759.
+(1757,DenseVector(-0.5803039403744243, -0.4143080906178671, -0.21642890822277572, 1.8402471724158769, -1.7225979755949936)), 
+(1759,DenseVector(-0.14588996435589863, 0.5173404677770979, 0.41518764759900506, 2.0721645650467755, -1.1747116334729348)), 
+(1,DenseVector(-0.13836340362882282, 0.37953366169255176, -0.29338804929156037, 2.100765922254597, -1.2114421855704194))
+
+Print out the learned latent vectors for movies 914, 1777 and 231
+Array((231,DenseVector(0.7038221861074163, 3.039968394662875, 0.8726060896561467, -1.2611852400770616, -4.0897431264506565)), 
+(1777,DenseVector(0.423588426331591, 1.2633540055913954, 0.3724951203529212, 0.4848435338340167, -2.0840695388018275)), 
+(914,DenseVector(0.788803692021034, -0.4546880300457872, -0.8467792645852583, 1.4184564890153268, -1.2697431447032272)))
+
+user 1 and movieid 914,
+user 1757 and movieid 1777,
+user 1759 and movieid 231.
+(((1,914),4.484789404679784))
+((1757,1777),3.6323993797968677)
+(((1759,231),4.023198811433145))
