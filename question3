@@ -1,0 +1,13 @@
+val user1 = "0"
+val user2 = "1"
+val usData = sc.textFile("hdfs://cshadoop1/yxg140730/input/userdata.txt")
+val filteredUD = usData.map(line => line.split(",")).map(line => (line(0),(line(1),line(6))))
+
+val input = sc.textFile("hdfs://cshadoop1/yxg140730/input/soc-LiveJournal1Adj.txt")
+val filteredInput = input.map(line => line.split("\t")).filter(line=>line(0)==user1||line(0)==user2).flatMap(line => line(1).split(",")).countByValue().filter(line=>(line._2 > 1)).map(line=>line._1)
+
+val fS = filteredInput.map(word=>(word,1))
+val filteredSTOS_sc = sc.parallelize(fS.toList)
+
+val join = filteredSTOS_sc.join(filteredUD)
+val result = join.map(entry=>(entry._2._2._1,entry._2._2._2)).collect

@@ -1,0 +1,20 @@
+val input = sc.textFile("hdfs://cshadoop1/yxg140730/input/soc-LiveJournal1Adj.txt")
+val Input = input.map(line => line.split("\t")).filter(line=>(line.length>1)).map( line=>{ val friendsList = line(1).split(",");friendsList.map(f=>(f,line(0)))})
+val oneInput = Input.flatMap(x=>x);
+val userData = sc.textFile("hdfs://cshadoop1/yxg140730/input/userdata.txt")
+val filta = userData.map(line => line.split(",")).map(line => (line(0),(line(1),line(9))))
+val splitedDate = filta.map(line=>(line._1,(line._2._1,2016-line._2._2.substring(line._2._2.length()-4).toInt)))
+val top20Infor = userData.map(line => line.split(",")).map(line => (line(0),(line(3),line(4),line(5))))
+
+val joinInfor = oneInput.join(splitedDate)
+val allAges = joinInfor.map(line=>(line._2._1,line._2._2._2)).groupByKey().sortByKey()
+
+def average[T]( ts: Iterable[T] )( implicit num: Numeric[T] ) = {
+   num.toDouble( ts.sum ) / ts.size
+}
+
+val avgs = allAges.map(x => (x._1, average(x._2)))
+val avgTop20 = avgs.sortBy(-_._2).take(20)
+
+val avgTop20RDD = sc.parallelize(avgTop20.toList)
+val joinTop20Infor = avgTop20RDD.join(top20Infor).map(line=>(line._1,(line._2._2._1,line._2._2._2,line._2._2._3,line._2._1))).collect

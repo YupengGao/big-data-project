@@ -1,0 +1,20 @@
+//Just change the values of user1 and user2 to any one you want, the type is string.
+val user1 = "0"
+val user2 = "1"
+
+val input = sc.textFile("hdfs://cshadoop1/yxg140730/input/soc-LiveJournal1Adj.txt")
+val filteredInput = input.map(line => 
+	line.split("\t"))
+
+val result = filteredInput.filter(line=>line(0)==user1||line(0)==user2)
+//split the list and reduce the dimension
+val reduceDimension = result.flatMap{
+    line => line(1).split(",")
+    }
+
+// count the number for each value
+val temp = 	reduceDimension.countByValue()
+// if the number bigger than 1, then get it from the data
+val temp1 = temp.filter(line=>(line._2 > 1))
+// get the first parameter of map
+val result = temp1.map(line=>line._1)

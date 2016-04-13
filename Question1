@@ -1,0 +1,105 @@
+／／get the file  
+val file = sc.textFile("/yxg140730/input/soc-LiveJournal1Adj.txt")
+// for a user id who does not have one single directed friend, get them out of the dataset
+//for user which don’t have any friends, we add a string at the end of each line. Then we filter the data 
+val dd = file.map{x=>
+     val tmp = x.split("\t")
+     if(tmp.length < 2){
+      (x+"false")
+     }
+     else{
+       (x+"true")
+     }
+   }
+
+   val newdd = dd.filter{x=>
+    x.contains("true")
+   }
+   val file = newdd.map{x=>
+    x.substring(0,x.length - 4)
+   } 
+
+//make the directed friends into key value pair
+ val line1 = file.map{ line =>
+        val fields = line.split("\t")
+        val fields2 = fields(1).split(",")
+       // if(fields.length > 1){    
+            fields2.map{y=>
+                  ((fields(0),y),"-1")
+            }
+        //}
+        //if(fields.length == 1){
+        //     fields.map{y=>
+        //          (y,"-100")
+        //     }
+        //}
+       
+}
+
+//make the undirected friend to key value pair  
+ val line2 = file.map{lines=>
+    val fields = lines.split("\t") 
+    val fields2 = fields(1).split(",")
+     fields2.map{y=>
+      fields2.map{x=>
+         if(y != x){
+         (  (y,x,fields(0)).toString, "true")
+         }else{
+          ((y,x,fields(0)).toString,"false")
+         }
+     }
+    }
+  } 
+//reduce the dimension of previous map  
+     val map1 = line1.flatMap(x=>x)
+	 val map2 = line2.flatMap(x=>x)
+	 val map22 = map2.flatMap(x=>x)
+//filter out the map with same y and x
+     val map2 = map22.filter{x =>
+       val temp = x.toString
+       temp.contains("true")
+       }
+//cut the “true” off
+     val num = map2.map{x=>
+      val y = x.toString
+      y.substring(2,y.length - 7)
+      } 
+     val map2 = num.map{x=>
+         val fields = x.split(",")
+         ((fields(0),fields(1)),fields(2))
+      }
+//all the pair should be like ((x,y),z)
+//get the pair begin with the user id that we are interested.	
+     val filteredNums = map2.filter(line=>(line._1._1=="924"||line._1._1=="924"||line._1._1=="8941"||line._1._1=="8942"||line._1._1=="9019"||line._1._1=="9020"||line._1._1=="9021"||line._1._1=="9022"||line._1._1=="9990"||line._1._1=="9992"||line._1._1=="9993"))
+
+// combine the two map together.
+     val d = map1.union(filteredNums).groupByKey()
+//after groupby, the value will be iterable value, convert them to string     
+	 val list = d.map{case (x, iter) => (x,iter.toString)}
+//if contains “-1” in its value, we get them out because the two users are mutual friends.
+     val temp = list.filter{line => 
+       val x = line.toString
+       !x.contains("-1")
+     }
+     val listCountNumber = temp.map{case(k,v) => 
+       //val fields1 = k.split(",")
+       val fields2 = v.split(",")
+       val c = fields2.length;
+       
+       (k._1,(k._2,c))//k’s first parameter and second parameter
+     }
+     val goupBykey = listCountNumber.sortBy(-_._2._2).groupByKey()//sort by c and group by key
+     val temp = goupBykey.map{case(k,v) => (k,v.take(10))}//get the top 10 
+     //map each two potential friends id
+     val result = temp.map{case(k,v)=>
+       v.map{x => 
+            (k,x._1)
+       }
+     }
+     val temp = result.flatMap{x=>x}
+     val result = temp.groupByKey()
+    
+
+
+     
+
